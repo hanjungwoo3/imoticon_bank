@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="#E8F5E8">
+
+    <!-- 앱 아이콘 -->
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@android:drawable/ic_dialog_info"
+        android:layout_marginBottom="16dp" />
+
+    <!-- 앱 제목 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#2E7D32"
+        android:layout_marginBottom="8dp" />
+
+    <!-- 앱 설명 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="카카오톡 무료 이모티콘을 위젯으로 확인하세요"
+        android:textSize="16sp"
+        android:textColor="#4CAF50"
+        android:layout_marginBottom="24dp"
+        android:gravity="center" />
+
+    <!-- 권한 상태 -->
+    <TextView
+        android:id="@+id/permissionStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="알림 권한 확인 중..."
+        android:textSize="14sp"
+        android:textColor="#666666"
+        android:layout_marginBottom="16dp"
+        android:gravity="center" />
+
+    <!-- RSS 상태 -->
+    <TextView
+        android:id="@+id/rssStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RSS 연결 확인 중..."
+        android:textSize="14sp"
+        android:textColor="#666666"
+        android:layout_marginBottom="24dp"
+        android:gravity="center" />
+
+    <!-- 위젯 추가 안내 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="📱 홈 화면에서 위젯 추가하기\n\n1. 홈 화면을 길게 누르세요\n2. '위젯' 또는 '위젯 추가'를 선택\n3. '이모티콘뱅크' 위젯을 찾아 추가\n4. 원하는 위치에 배치하세요"
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:lineSpacingExtra="4dp"
+        android:gravity="center"
+        android:background="#FFFFFF"
+        android:padding="16dp"
+        android:layout_marginBottom="24dp" />
+
+    <!-- 새로고침 버튼 -->
+    <Button
+        android:id="@+id/refreshButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="🔄 상태 새로고침"
+        android:textSize="16sp"
+        android:background="#4CAF50"
+        android:textColor="#FFFFFF"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- 테스트 알림 버튼 -->
+    <Button
+        android:id="@+id/testNotificationButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="🔔 테스트 알림"
+        android:textSize="16sp"
+        android:background="#FF9800"
+        android:textColor="#FFFFFF"
+        android:padding="12dp" />
+
+</LinearLayout> 

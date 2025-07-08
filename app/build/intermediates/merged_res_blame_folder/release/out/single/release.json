@@ -1,0 +1,46 @@
+[
+    {
+        "merged": "com.kakaolinkwidget.app-merged_res-40:/xml_network_security_config.xml.flat",
+        "source": "com.kakaolinkwidget.app-main-41:/xml/network_security_config.xml"
+    },
+    {
+        "merged": "com.kakaolinkwidget.app-merged_res-40:/xml_kakaolink_widget_info.xml.flat",
+        "source": "com.kakaolinkwidget.app-main-41:/xml/kakaolink_widget_info.xml"
+    },
+    {
+        "merged": "com.kakaolinkwidget.app-merged_res-40:/drawable_ic_refresh.xml.flat",
+        "source": "com.kakaolinkwidget.app-main-41:/drawable/ic_refresh.xml"
+    },
+    {
+        "merged": "com.kakaolinkwidget.app-merged_res-40:/layout_activity_main.xml.flat",
+        "source": "com.kakaolinkwidget.app-main-41:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.kakaolinkwidget.app-merged_res-40:/drawable_link_item_background.xml.flat",
+        "source": "com.kakaolinkwidget.app-main-41:/drawable/link_item_background.xml"
+    },
+    {
+        "merged": "com.kakaolinkwidget.app-merged_res-40:/layout_widget_layout.xml.flat",
+        "source": "com.kakaolinkwidget.app-main-41:/layout/widget_layout.xml"
+    },
+    {
+        "merged": "com.kakaolinkwidget.app-merged_res-40:/drawable_widget_background.xml.flat",
+        "source": "com.kakaolinkwidget.app-main-41:/drawable/widget_background.xml"
+    },
+    {
+        "merged": "com.kakaolinkwidget.app-merged_res-40:/xml_data_extraction_rules.xml.flat",
+        "source": "com.kakaolinkwidget.app-main-41:/xml/data_extraction_rules.xml"
+    },
+    {
+        "merged": "com.kakaolinkwidget.app-merged_res-40:/drawable_widget_preview.xml.flat",
+        "source": "com.kakaolinkwidget.app-main-41:/drawable/widget_preview.xml"
+    },
+    {
+        "merged": "com.kakaolinkwidget.app-merged_res-40:/layout_widget_link_item.xml.flat",
+        "source": "com.kakaolinkwidget.app-main-41:/layout/widget_link_item.xml"
+    },
+    {
+        "merged": "com.kakaolinkwidget.app-merged_res-40:/xml_backup_rules.xml.flat",
+        "source": "com.kakaolinkwidget.app-main-41:/xml/backup_rules.xml"
+    }
+]
