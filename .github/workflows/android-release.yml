@@ -30,4 +30,5 @@ jobs:
           tag: ${{ github.sha }}
           name: 'Auto Release ${{ github.sha }}'
           body: '자동 빌드 및 APK 릴리즈'
-          allowUpdates: true 
+          allowUpdates: true
+          token: ${{ secrets.GH_TOKEN }} 
