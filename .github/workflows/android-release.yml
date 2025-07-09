@@ -25,10 +25,11 @@ jobs:
         run: ./gradlew assembleDebug
 
       - name: Upload APK to Release
-        uses: ncipollo/release-action@v1
+        uses: release-action@v1
         with:
           artifacts: app/build/outputs/apk/debug/app-debug.apk
-          tag: ${{ github.sha }}
+          tag: ${{ github.ref }}
           name: 'Auto Release ${{ github.sha }}'
           body: '자동 빌드 및 APK 릴리즈'
-          allowUpdates: true 
+          allowUpdates: true
+          token: ${{ secrets.PERSONAL_TOKEN }} 
