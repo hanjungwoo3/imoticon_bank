@@ -160,7 +160,7 @@ class MainActivity : ComponentActivity() {
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
         
-        val updateWorkRequest = PeriodicWorkRequestBuilder<WidgetUpdateWorker>(60, java.util.concurrent.TimeUnit.MINUTES)
+        val updateWorkRequest = PeriodicWorkRequestBuilder<WidgetUpdateWorker>(30, java.util.concurrent.TimeUnit.MINUTES)
             .setConstraints(constraints)
             .build()
         

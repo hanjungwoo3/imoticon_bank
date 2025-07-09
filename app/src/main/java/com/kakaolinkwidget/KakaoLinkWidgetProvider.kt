@@ -13,6 +13,8 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 import android.widget.RemoteViews
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class KakaoLinkWidgetProvider : AppWidgetProvider() {
     
@@ -23,6 +25,8 @@ class KakaoLinkWidgetProvider : AppWidgetProvider() {
         const val ACTION_ITEM_CLICK = "com.kakaolinkwidget.ITEM_CLICK"
         private const val WORK_NAME = "widget_update_work"
         private const val PREF_NAME = "widget_links"
+        private const val PREF_EMOTICONS = "emoticon_list_json"
+        private const val PREF_LINKS = "link_list_json"
     }
     
     override fun onUpdate(
@@ -108,77 +112,61 @@ class KakaoLinkWidgetProvider : AppWidgetProvider() {
         appWidgetId: Int
     ) {
         CoroutineScope(Dispatchers.IO).launch {
+            val notificationHelper = NotificationHelper(context)
+            val gson = Gson()
+            // 1. 이모티콘 fetch
+            var emoticons: List<KakaoLink>? = null
             try {
                 val parser = RssParser()
                 val kakaoLinks = parser.parseKakaoLinks()
-
-                // 1. 신규 이모티콘 비교 (prev_* 없으면 0)
-                val newCount = checkForNewEmoticons(context, kakaoLinks)
-                if (newCount > 0) {
-                    val notificationHelper = NotificationHelper(context)
-                    notificationHelper.showNewEmoticonNotification(newCount)
+                emoticons = kakaoLinks.filter { it.description != "가을타타타" }
+            } catch (_: Exception) {}
+            if (emoticons != null) {
+                val oldEmoticons = loadListFromPrefs(context, PREF_EMOTICONS)
+                val newItems = emoticons.filter { new -> oldEmoticons.none { it.title == new.title } }
+                if (newItems.isNotEmpty()) {
+                    notificationHelper.showNewEmoticonNotification(newItems.size)
                 }
-
-                // 2. prev_*, title_* 등 SharedPreferences 갱신
-                saveLinks(context, kakaoLinks)
-
-                // 3. UI 스레드에서 위젯 업데이트
-                CoroutineScope(Dispatchers.Main).launch {
-                    updateWidgetWithData(context, appWidgetManager, appWidgetId, kakaoLinks)
+                saveListToPrefs(context, PREF_EMOTICONS, emoticons)
+            }
+            // 2. 링크 fetch
+            var links: List<KakaoLink>? = null
+            try {
+                val parser = RssParser()
+                val kakaoLinks = parser.parseKakaoLinks()
+                links = kakaoLinks.filter { it.description == "가을타타타" }
+            } catch (_: Exception) {}
+            if (links != null) {
+                val oldLinks = loadListFromPrefs(context, PREF_LINKS)
+                val newItems = links.filter { new -> oldLinks.none { it.title == new.title } }
+                if (newItems.isNotEmpty()) {
+                    notificationHelper.showNewLinkNotification(newItems.size)
                 }
-            } catch (e: Exception) {
-                CoroutineScope(Dispatchers.Main).launch {
-                    updateWidgetWithError(context, appWidgetManager, appWidgetId)
-                }
+                saveListToPrefs(context, PREF_LINKS, links)
+            }
+            // 3. UI 스레드에서 위젯 업데이트 (가장 최신 데이터로)
+            val kakaoLinks = (emoticons ?: loadListFromPrefs(context, PREF_EMOTICONS)) + (links ?: loadListFromPrefs(context, PREF_LINKS))
+            CoroutineScope(Dispatchers.Main).launch {
+                updateWidgetWithData(context, appWidgetManager, appWidgetId, kakaoLinks)
             }
         }
     }
-    
-    private fun checkForNewEmoticons(context: Context, newKakaoLinks: List<KakaoLink>): Int {
+
+    private fun saveListToPrefs(context: Context, key: String, list: List<KakaoLink>) {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        val prevCount = prefs.getInt("prev_count", -1)
-        if (prevCount == -1) {
-            // prev_* 데이터가 없으면 신규 없음
-            return 0
-        }
-        val prevTitles = mutableSetOf<String>()
-        for (i in 0 until prevCount) {
-            val title = prefs.getString("prev_title_$i", null)
-            if (title != null) prevTitles.add(title)
-        }
-        var newCount = 0
-        for (newLink in newKakaoLinks) {
-            if (!prevTitles.contains(newLink.title)) {
-                newCount++
-            }
-        }
-        return newCount
+        val json = Gson().toJson(list)
+        prefs.edit().putString(key, json).apply()
     }
-    
-    private fun saveLinks(context: Context, kakaoLinks: List<KakaoLink>) {
+
+    private fun loadListFromPrefs(context: Context, key: String): List<KakaoLink> {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        val editor = prefs.edit()
-        val currentCount = prefs.getInt("count", 0)
-        // 기존 title_*, url_* → prev_title_*, prev_url_*
-        for (i in 0 until currentCount) {
-            val title = prefs.getString("title_$i", null)
-            val url = prefs.getString("url_$i", null)
-            if (title != null) editor.putString("prev_title_$i", title)
-            if (url != null) editor.putString("prev_url_$i", url)
+        val json = prefs.getString(key, null) ?: return emptyList()
+        val type = object : TypeToken<List<KakaoLink>>() {}.type
+        return try {
+            Gson().fromJson(json, type)
+        } catch (_: Exception) {
+            emptyList()
         }
-        editor.putInt("prev_count", currentCount)
-        // 기존 current 데이터 삭제
-        for (i in 0 until currentCount) {
-            editor.remove("title_$i")
-            editor.remove("url_$i")
-        }
-        // 새 데이터 저장
-        editor.putInt("count", kakaoLinks.size)
-        for (i in kakaoLinks.indices) {
-            editor.putString("title_$i", kakaoLinks[i].title)
-            editor.putString("url_$i", kakaoLinks[i].url)
-        }
-        editor.apply()
     }
     
     private fun getSavedLinkUrl(context: Context, position: Int): String {
