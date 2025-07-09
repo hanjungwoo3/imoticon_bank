@@ -10,28 +10,28 @@
 10
 11    <!-- 인터넷 권한 -->
 12    <uses-permission android:name="android.permission.INTERNET" />
-12-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:6:5-67
-12-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:6:22-64
+12-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:6:5-67
+12-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:6:22-64
 13
 14    <!-- 네트워크 상태 확인 권한 -->
 15    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-15-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:9:5-79
-15-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:9:22-76
+15-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:9:5-79
+15-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:9:22-76
 16
 17    <!-- 백그라운드 작업을 위한 권한 -->
 18    <uses-permission android:name="android.permission.WAKE_LOCK" />
-18-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:12:5-68
-18-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:12:22-65
+18-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:12:5-68
+18-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:12:22-65
 19
 20    <!-- 부팅 시 자동 시작 권한 -->
 21    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-21-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:15:5-81
-21-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:15:22-78
+21-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:15:5-81
+21-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:15:22-78
 22
 23    <!-- 알림 권한 (Android 13+) -->
 24    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-24-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:18:5-77
-24-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:18:22-74
+24-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:18:5-77
+24-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:18:22-74
 25    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 25-->[androidx.work:work-runtime:2.8.1] /Users/jwhan-macbook/.gradle/caches/8.14.2/transforms/7433d9385395fa0626b5cc26892c1c9d/transformed/work-runtime-2.8.1/AndroidManifest.xml:26:5-77
 25-->[androidx.work:work-runtime:2.8.1] /Users/jwhan-macbook/.gradle/caches/8.14.2/transforms/7433d9385395fa0626b5cc26892c1c9d/transformed/work-runtime-2.8.1/AndroidManifest.xml:26:22-74
@@ -48,97 +48,97 @@
 31-->[androidx.core:core:1.12.0] /Users/jwhan-macbook/.gradle/caches/8.14.2/transforms/256db88813aa58d30f25904ee9a8972a/transformed/core-1.12.0/AndroidManifest.xml:26:22-94
 32
 33    <application
-33-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:20:5-68:19
+33-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:20:5-68:19
 34        android:allowBackup="true"
-34-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:21:9-35
+34-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:21:9-35
 35        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 35-->[androidx.core:core:1.12.0] /Users/jwhan-macbook/.gradle/caches/8.14.2/transforms/256db88813aa58d30f25904ee9a8972a/transformed/core-1.12.0/AndroidManifest.xml:28:18-86
 36        android:dataExtractionRules="@xml/data_extraction_rules"
-36-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:22:9-65
+36-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:22:9-65
 37        android:debuggable="true"
 38        android:extractNativeLibs="false"
 39        android:fullBackupContent="@xml/backup_rules"
-39-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:23:9-54
+39-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:23:9-54
 40        android:icon="@android:drawable/ic_dialog_info"
-40-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:24:9-56
+40-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:24:9-56
 41        android:label="@string/app_name"
-41-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:25:9-41
+41-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:25:9-41
 42        android:networkSecurityConfig="@xml/network_security_config"
-42-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:30:9-69
+42-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:30:9-69
 43        android:roundIcon="@android:drawable/ic_dialog_info"
-43-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:26:9-61
+43-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:26:9-61
 44        android:supportsRtl="true"
-44-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:27:9-35
+44-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:27:9-35
 45        android:theme="@style/Theme.KakaoLinkWidget"
-45-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:28:9-53
+45-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:28:9-53
 46        android:usesCleartextTraffic="true" >
-46-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:29:9-44
+46-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:29:9-44
 47        <activity
-47-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:33:9-42:20
+47-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:33:9-42:20
 48            android:name="com.kakaolinkwidget.MainActivity"
-48-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:34:13-41
+48-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:34:13-41
 49            android:exported="true"
-49-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:35:13-36
+49-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:35:13-36
 50            android:label="@string/app_name"
-50-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:36:13-45
+50-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:36:13-45
 51            android:theme="@style/Theme.KakaoLinkWidget" >
-51-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:37:13-57
+51-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:37:13-57
 52            <intent-filter>
-52-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:38:13-41:29
+52-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:38:13-41:29
 53                <action android:name="android.intent.action.MAIN" />
-53-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:39:17-69
-53-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:39:25-66
+53-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:39:17-69
+53-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:39:25-66
 54
 55                <category android:name="android.intent.category.LAUNCHER" />
-55-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:40:17-77
-55-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:40:27-74
+55-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:40:17-77
+55-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:40:27-74
 56            </intent-filter>
 57        </activity>
 58
 59        <!-- 위젯 프로바이더 -->
 60        <receiver
-60-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:45:9-53:20
+60-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:45:9-53:20
 61            android:name="com.kakaolinkwidget.KakaoLinkWidgetProvider"
-61-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:45:19-58
+61-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:45:19-58
 62            android:exported="true" >
-62-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:46:13-36
+62-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:46:13-36
 63            <intent-filter>
-63-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:47:13-49:29
+63-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:47:13-49:29
 64                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-64-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:48:17-84
-64-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:48:25-81
+64-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:48:17-84
+64-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:48:25-81
 65            </intent-filter>
 66
 67            <meta-data
-67-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:50:13-52:65
+67-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:50:13-52:65
 68                android:name="android.appwidget.provider"
-68-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:51:17-58
+68-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:51:17-58
 69                android:resource="@xml/kakaolink_widget_info" />
-69-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:52:17-62
+69-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:52:17-62
 70        </receiver>
 71
 72        <!-- 위젯 서비스 -->
 73        <service
-73-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:56:9-57:72
+73-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:56:9-57:72
 74            android:name="com.kakaolinkwidget.KakaoLinkWidgetService"
-74-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:56:18-56
+74-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:56:18-56
 75            android:permission="android.permission.BIND_REMOTEVIEWS" />
-75-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:57:13-69
+75-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:57:13-69
 76
 77        <!-- 부팅 시 자동 시작을 위한 리시버 -->
 78        <receiver
-78-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:60:9-66:20
+78-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:60:9-66:20
 79            android:name="com.kakaolinkwidget.BootReceiver"
-79-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:60:19-47
+79-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:60:19-47
 80            android:enabled="true"
-80-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:61:13-35
+80-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:61:13-35
 81            android:exported="true" >
-81-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:62:13-36
+81-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:62:13-36
 82            <intent-filter>
-82-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:63:13-65:29
+82-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:63:13-65:29
 83                <action android:name="android.intent.action.BOOT_COMPLETED" />
-83-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:64:17-79
-83-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:64:25-76
+83-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:64:17-79
+83-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:64:25-76
 84            </intent-filter>
 85        </receiver>
 86
@@ -309,8 +309,8 @@
 171            <intent-filter>
 171-->[androidx.work:work-runtime:2.8.1] /Users/jwhan-macbook/.gradle/caches/8.14.2/transforms/7433d9385395fa0626b5cc26892c1c9d/transformed/work-runtime-2.8.1/AndroidManifest.xml:116:13-120:29
 172                <action android:name="android.intent.action.BOOT_COMPLETED" />
-172-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:64:17-79
-172-->/Users/jwhan-macbook/Repository/android/rss/app/src/main/AndroidManifest.xml:64:25-76
+172-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:64:17-79
+172-->/Users/jwhan-macbook/Repository/android/imoticon_bank/app/src/main/AndroidManifest.xml:64:25-76
 173                <action android:name="android.intent.action.TIME_SET" />
 173-->[androidx.work:work-runtime:2.8.1] /Users/jwhan-macbook/.gradle/caches/8.14.2/transforms/7433d9385395fa0626b5cc26892c1c9d/transformed/work-runtime-2.8.1/AndroidManifest.xml:118:17-73
 173-->[androidx.work:work-runtime:2.8.1] /Users/jwhan-macbook/.gradle/caches/8.14.2/transforms/7433d9385395fa0626b5cc26892c1c9d/transformed/work-runtime-2.8.1/AndroidManifest.xml:118:25-70

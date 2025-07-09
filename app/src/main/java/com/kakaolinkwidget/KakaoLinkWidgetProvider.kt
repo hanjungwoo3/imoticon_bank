@@ -53,12 +53,8 @@ class KakaoLinkWidgetProvider : AppWidgetProvider() {
                 openLink(context, "https://2244.tistory.com")
             }
             ACTION_ITEM_CLICK -> {
-                val position = intent.getIntExtra("position", -1)
-                
-                if (position >= 0) {
-                    val url = getSavedLinkUrl(context, position)
-                    openLink(context, url)
-                }
+                val url = intent.getStringExtra("url") ?: "https://2244.tistory.com"
+                openLink(context, url)
             }
         }
     }
@@ -121,8 +117,9 @@ class KakaoLinkWidgetProvider : AppWidgetProvider() {
                 val kakaoLinks = parser.parseKakaoLinks()
                 emoticons = kakaoLinks.filter { it.description != "가을타타타" }
             } catch (_: Exception) {}
-            if (emoticons != null) {
-                val oldEmoticons = loadListFromPrefs(context, PREF_EMOTICONS)
+            val oldEmoticons = loadListFromPrefs(context, PREF_EMOTICONS)
+            val emoticonsToUse = if (emoticons.isNullOrEmpty()) oldEmoticons else emoticons
+            if (!emoticons.isNullOrEmpty()) {
                 val newItems = emoticons.filter { new -> oldEmoticons.none { it.title == new.title } }
                 if (newItems.isNotEmpty()) {
                     notificationHelper.showNewEmoticonNotification(newItems.size)
@@ -136,8 +133,9 @@ class KakaoLinkWidgetProvider : AppWidgetProvider() {
                 val kakaoLinks = parser.parseKakaoLinks()
                 links = kakaoLinks.filter { it.description == "가을타타타" }
             } catch (_: Exception) {}
-            if (links != null) {
-                val oldLinks = loadListFromPrefs(context, PREF_LINKS)
+            val oldLinks = loadListFromPrefs(context, PREF_LINKS)
+            val linksToUse = if (links.isNullOrEmpty()) oldLinks else links
+            if (!links.isNullOrEmpty()) {
                 val newItems = links.filter { new -> oldLinks.none { it.title == new.title } }
                 if (newItems.isNotEmpty()) {
                     notificationHelper.showNewLinkNotification(newItems.size)
@@ -145,7 +143,7 @@ class KakaoLinkWidgetProvider : AppWidgetProvider() {
                 saveListToPrefs(context, PREF_LINKS, links)
             }
             // 3. UI 스레드에서 위젯 업데이트 (가장 최신 데이터로)
-            val kakaoLinks = (emoticons ?: loadListFromPrefs(context, PREF_EMOTICONS)) + (links ?: loadListFromPrefs(context, PREF_LINKS))
+            val kakaoLinks = emoticonsToUse + linksToUse
             CoroutineScope(Dispatchers.Main).launch {
                 updateWidgetWithData(context, appWidgetManager, appWidgetId, kakaoLinks)
             }
@@ -167,11 +165,6 @@ class KakaoLinkWidgetProvider : AppWidgetProvider() {
         } catch (_: Exception) {
             emptyList()
         }
-    }
-    
-    private fun getSavedLinkUrl(context: Context, position: Int): String {
-        val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        return prefs.getString("url_$position", "https://2244.tistory.com") ?: "https://2244.tistory.com"
     }
     
     private fun updateWidgetWithData(
@@ -214,7 +207,7 @@ class KakaoLinkWidgetProvider : AppWidgetProvider() {
             itemView.setViewVisibility(R.id.link_url, android.view.View.GONE)
             val itemClickIntent = Intent(context, KakaoLinkWidgetProvider::class.java)
             itemClickIntent.action = ACTION_ITEM_CLICK
-            itemClickIntent.putExtra("position", itemIndex)
+            itemClickIntent.putExtra("url", link.url)
             val itemPendingIntent = PendingIntent.getBroadcast(
                 context, 200 + itemIndex, itemClickIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
@@ -236,7 +229,7 @@ class KakaoLinkWidgetProvider : AppWidgetProvider() {
             itemView.setViewVisibility(R.id.link_url, android.view.View.GONE)
             val itemClickIntent = Intent(context, KakaoLinkWidgetProvider::class.java)
             itemClickIntent.action = ACTION_ITEM_CLICK
-            itemClickIntent.putExtra("position", itemIndex)
+            itemClickIntent.putExtra("url", link.url)
             val itemPendingIntent = PendingIntent.getBroadcast(
                 context, 200 + itemIndex, itemClickIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
