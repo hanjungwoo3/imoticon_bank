@@ -15,6 +15,7 @@ import java.util.*
 import android.widget.RemoteViews
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import android.util.Log
 
 class KakaoLinkWidgetProvider : AppWidgetProvider() {
     
@@ -121,8 +122,9 @@ class KakaoLinkWidgetProvider : AppWidgetProvider() {
             val emoticonsToUse = if (emoticons.isNullOrEmpty()) oldEmoticons else emoticons
             if (!emoticons.isNullOrEmpty()) {
                 val newItems = emoticons.filter { new -> oldEmoticons.none { it.title == new.title } }
+                Log.d("Widget", "새 이모티콘: ${newItems.size}개, ${newItems.map { it.title }}")
                 if (newItems.isNotEmpty()) {
-                    notificationHelper.showNewEmoticonNotification(newItems.size)
+                    notificationHelper.showNewEmoticonNotification(newItems)
                 }
                 saveListToPrefs(context, PREF_EMOTICONS, emoticons)
             }
@@ -137,8 +139,9 @@ class KakaoLinkWidgetProvider : AppWidgetProvider() {
             val linksToUse = if (links.isNullOrEmpty()) oldLinks else links
             if (!links.isNullOrEmpty()) {
                 val newItems = links.filter { new -> oldLinks.none { it.title == new.title } }
+                Log.d("Widget", "새 링크: ${newItems.size}개, ${newItems.map { it.title }}")
                 if (newItems.isNotEmpty()) {
-                    notificationHelper.showNewLinkNotification(newItems.size)
+                    notificationHelper.showNewLinkNotification(newItems)
                 }
                 saveListToPrefs(context, PREF_LINKS, links)
             }

@@ -54,9 +54,13 @@ class NotificationHelper(private val context: Context) {
         }
     }
 
-    fun showNewEmoticonNotification(newCount: Int) {
-        if (newCount <= 0) {
-            return
+    fun showNewEmoticonNotification(newItems: List<KakaoLink>) {
+        if (newItems.isEmpty()) return
+        val titles = newItems.joinToString("\n") { "• ${it.title}" }
+        val content = if (newItems.size == 1) {
+            "새로운 카카오톡 이모티콘 1개가 등록되었습니다\n\n$titles"
+        } else {
+            "새로운 카카오톡 이모티콘 ${newItems.size}개가 등록되었습니다\n\n$titles"
         }
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://2244.tistory.com"))
         val pendingIntent = PendingIntent.getActivity(
@@ -65,15 +69,9 @@ class NotificationHelper(private val context: Context) {
             intent, 
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-        val title = "🎉 새로운 이모티콘 등록!"
-        val content = if (newCount == 1) {
-            "새로운 카카오톡 이모티콘 1개가 등록되었습니다"
-        } else {
-            "새로운 카카오톡 이모티콘 ${newCount}개가 등록되었습니다"
-        }
         val notification = NotificationCompat.Builder(context, CHANNEL_ID_EMOTICON)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
-            .setContentTitle(title)
+            .setContentTitle("🎉 새로운 이모티콘 등록!")
             .setContentText(content)
             .setStyle(NotificationCompat.BigTextStyle().bigText(content))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -91,26 +89,24 @@ class NotificationHelper(private val context: Context) {
         }
     }
 
-    fun showNewLinkNotification(newCount: Int) {
-        if (newCount <= 0) {
-            return
+    fun showNewLinkNotification(newItems: List<KakaoLink>) {
+        if (newItems.isEmpty()) return
+        val titles = newItems.joinToString("\n") { "• ${it.title}" }
+        val content = if (newItems.size == 1) {
+            "새로운 링크 1개가 등록되었습니다\n\n$titles"
+        } else {
+            "새로운 링크 ${newItems.size}개가 등록되었습니다\n\n$titles"
         }
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://cafe.naver.com/todaysppc"))
         val pendingIntent = PendingIntent.getActivity(
             context, 
-            1, // requestCode 분리
+            1, 
             intent, 
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-        val title = "🔗 새로운 링크 등록!"
-        val content = if (newCount == 1) {
-            "새로운 링크 1개가 등록되었습니다"
-        } else {
-            "새로운 링크 ${newCount}개가 등록되었습니다"
-        }
         val notification = NotificationCompat.Builder(context, CHANNEL_ID_LINK)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
-            .setContentTitle(title)
+            .setContentTitle("🔗 새로운 링크 등록!")
             .setContentText(content)
             .setStyle(NotificationCompat.BigTextStyle().bigText(content))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)

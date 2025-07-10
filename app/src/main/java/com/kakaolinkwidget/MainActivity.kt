@@ -145,10 +145,11 @@ class MainActivity : ComponentActivity() {
             Toast.makeText(this, "❌ 알림 권한이 필요합니다", Toast.LENGTH_SHORT).show()
             return
         }
-        
         try {
             val notificationHelper = NotificationHelper(this)
-            notificationHelper.showNewEmoticonNotification(1)
+            // 테스트용 더미 데이터 생성
+            val testList = listOf(KakaoLink("테스트 이모티콘", "https://test.url", "테스트 설명"))
+            notificationHelper.showNewEmoticonNotification(testList)
             Toast.makeText(this, "🔔 테스트 알림을 전송했습니다", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             Toast.makeText(this, "❌ 알림 전송 실패: ${e.message}", Toast.LENGTH_LONG).show()
