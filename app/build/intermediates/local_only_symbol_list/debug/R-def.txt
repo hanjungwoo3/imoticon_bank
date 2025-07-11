@@ -19,6 +19,7 @@ drawable link_item_background
 drawable widget_background
 drawable widget_preview
 id item_container
+id last_updated_text
 id link_title
 id link_url
 id links_container

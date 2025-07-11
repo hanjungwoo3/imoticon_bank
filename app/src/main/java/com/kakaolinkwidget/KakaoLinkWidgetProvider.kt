@@ -11,7 +11,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 import android.widget.RemoteViews
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -41,6 +42,8 @@ class KakaoLinkWidgetProvider : AppWidgetProvider() {
         }
         // 자동 업데이트 작업 시작
         scheduleWidgetUpdate(context)
+        // 위젯 추가/업데이트 시 즉시 데이터 fetch
+        refreshAllWidgets(context)
     }
     
     override fun onReceive(context: Context, intent: Intent) {
@@ -108,47 +111,70 @@ class KakaoLinkWidgetProvider : AppWidgetProvider() {
         appWidgetManager: AppWidgetManager,
         appWidgetId: Int
     ) {
+        Log.d("Widget", "loadWidgetData 진입: appWidgetId=$appWidgetId")
+        val prefs = context.getSharedPreferences("widget_prefs", Context.MODE_PRIVATE)
+        // fetch in progress 플래그 확인
+        if (prefs.getBoolean("fetch_in_progress", false)) {
+            android.util.Log.d("Widget", "이미 fetch 중이므로 중복 요청 방지: appWidgetId=$appWidgetId")
+            return
+        }
+        prefs.edit().putBoolean("fetch_in_progress", true).apply()
         CoroutineScope(Dispatchers.IO).launch {
-            val notificationHelper = NotificationHelper(context)
-            val gson = Gson()
-            // 1. 이모티콘 fetch
-            var emoticons: List<KakaoLink>? = null
+            var emoticonsToUse: List<KakaoLink> = emptyList()
+            var linksToUse: List<KakaoLink> = emptyList()
             try {
-                val parser = RssParser()
-                val kakaoLinks = parser.parseKakaoLinks()
-                emoticons = kakaoLinks.filter { it.description != "가을타타타" }
-            } catch (_: Exception) {}
-            val oldEmoticons = loadListFromPrefs(context, PREF_EMOTICONS)
-            val emoticonsToUse = if (emoticons.isNullOrEmpty()) oldEmoticons else emoticons
-            if (!emoticons.isNullOrEmpty()) {
-                val newItems = emoticons.filter { new -> oldEmoticons.none { it.title == new.title } }
-                Log.d("Widget", "새 이모티콘: ${newItems.size}개, ${newItems.map { it.title }}")
-                if (newItems.isNotEmpty()) {
-                    notificationHelper.showNewEmoticonNotification(newItems)
+                val notificationHelper = NotificationHelper(context)
+                val gson = Gson()
+                var emoticonUpdated = false
+                var linkUpdated = false
+                // 1. 이모티콘 fetch
+                var emoticons: List<KakaoLink>? = null
+                try {
+                    val parser = RssParser()
+                    val kakaoLinks = parser.parseKakaoLinks()
+                    emoticons = kakaoLinks.filter { it.description != "가을타타타" }
+                } catch (_: Exception) {}
+                val oldEmoticons = loadListFromPrefs(context, PREF_EMOTICONS)
+                emoticonsToUse = if (emoticons.isNullOrEmpty()) oldEmoticons else emoticons
+                if (!emoticons.isNullOrEmpty()) {
+                    val newItems = emoticons.filter { new -> oldEmoticons.none { it.title == new.title } }
+                    Log.d("Widget", "새 이모티콘: ${newItems.size}개, ${newItems.map { it.title }}")
+                    if (newItems.isNotEmpty()) {
+                        notificationHelper.showNewEmoticonNotification(newItems)
+                    }
+                    saveListToPrefs(context, PREF_EMOTICONS, emoticons)
+                    prefs.edit().putLong("last_updated_emoticon", System.currentTimeMillis()).apply()
+                    emoticonUpdated = true
                 }
-                saveListToPrefs(context, PREF_EMOTICONS, emoticons)
-            }
-            // 2. 링크 fetch
-            var links: List<KakaoLink>? = null
-            try {
-                val parser = RssParser()
-                val kakaoLinks = parser.parseKakaoLinks()
-                links = kakaoLinks.filter { it.description == "가을타타타" }
-            } catch (_: Exception) {}
-            val oldLinks = loadListFromPrefs(context, PREF_LINKS)
-            val linksToUse = if (links.isNullOrEmpty()) oldLinks else links
-            if (!links.isNullOrEmpty()) {
-                val newItems = links.filter { new -> oldLinks.none { it.title == new.title } }
-                Log.d("Widget", "새 링크: ${newItems.size}개, ${newItems.map { it.title }}")
-                if (newItems.isNotEmpty()) {
-                    notificationHelper.showNewLinkNotification(newItems)
+                // 2. 링크 fetch
+                var links: List<KakaoLink>? = null
+                try {
+                    val parser = RssParser()
+                    val kakaoLinks = parser.parseKakaoLinks()
+                    links = kakaoLinks.filter { it.description == "가을타타타" }
+                } catch (_: Exception) {}
+                val oldLinks = loadListFromPrefs(context, PREF_LINKS)
+                linksToUse = if (links.isNullOrEmpty()) oldLinks else links
+                if (!links.isNullOrEmpty()) {
+                    val newItems = links.filter { new -> oldLinks.none { it.title == new.title } }
+                    Log.d("Widget", "새 링크: ${newItems.size}개, ${newItems.map { it.title }}")
+                    if (newItems.isNotEmpty()) {
+                        notificationHelper.showNewLinkNotification(newItems)
+                    }
+                    saveListToPrefs(context, PREF_LINKS, links)
+                    prefs.edit().putLong("last_updated_link", System.currentTimeMillis()).apply()
+                    linkUpdated = true
                 }
-                saveListToPrefs(context, PREF_LINKS, links)
-            }
-            // 3. UI 스레드에서 위젯 업데이트 (가장 최신 데이터로)
-            val kakaoLinks = emoticonsToUse + linksToUse
-            CoroutineScope(Dispatchers.Main).launch {
-                updateWidgetWithData(context, appWidgetManager, appWidgetId, kakaoLinks)
+                // 3. UI 스레드에서 위젯 업데이트 (가장 최신 데이터로)
+                val kakaoLinks = emoticonsToUse + linksToUse
+                CoroutineScope(Dispatchers.Main).launch {
+                    updateWidgetWithData(context, appWidgetManager, appWidgetId, kakaoLinks)
+                }
+            } finally {
+                android.util.Log.d("Widget", "finally: fetch_in_progress false로 해제: appWidgetId=$appWidgetId")
+                prefs.edit().putBoolean("fetch_in_progress", false).apply()
+                android.util.Log.d("Widget", "emoticonsToUse.size=${emoticonsToUse.size}, linksToUse.size=${linksToUse.size}, appWidgetId=$appWidgetId")
+                Log.d("Widget", "loadWidgetData 종료: appWidgetId=$appWidgetId")
             }
         }
     }
@@ -176,6 +202,7 @@ class KakaoLinkWidgetProvider : AppWidgetProvider() {
         appWidgetId: Int,
         kakaoLinks: List<KakaoLink>
     ) {
+        android.util.Log.d("Widget", "updateWidgetWithData: kakaoLinks.size=${kakaoLinks.size}, appWidgetId=$appWidgetId, ${kakaoLinks.map { it.title }}")
         val views = RemoteViews(context.packageName, R.layout.widget_layout)
         
         // 새로고침 버튼 설정
@@ -250,6 +277,26 @@ class KakaoLinkWidgetProvider : AppWidgetProvider() {
         
         // 위젯 업데이트
         appWidgetManager.updateAppWidget(appWidgetId, views)
+
+        // 마지막 갱신 시각 표시
+        val prefs = context.getSharedPreferences("widget_prefs", Context.MODE_PRIVATE)
+        val lastEmoticon = prefs.getLong("last_updated_emoticon", 0L)
+        val lastLink = prefs.getLong("last_updated_link", 0L)
+        val sdf = SimpleDateFormat("MM/dd HH:mm:ss", Locale.getDefault())
+        val emoticonStr = if (lastEmoticon > 0) "이모티콘: ${sdf.format(Date(lastEmoticon))}" else ""
+        val linkStr = if (lastLink > 0) "링크: ${sdf.format(Date(lastLink))}" else ""
+        val lastUpdatedStr =
+            if (emoticonStr.isNotEmpty() && linkStr.isNotEmpty())
+                "마지막 갱신\n$emoticonStr\n$linkStr"
+            else if (emoticonStr.isNotEmpty())
+                "마지막 갱신\n$emoticonStr"
+            else if (linkStr.isNotEmpty())
+                "마지막 갱신\n$linkStr"
+            else
+                ""
+        android.util.Log.d("Widget", "lastUpdatedStr: $lastUpdatedStr")
+        views.setTextViewText(R.id.last_updated_text, lastUpdatedStr)
+        android.util.Log.d("Widget", "updateWidgetWithData END: appWidgetId=$appWidgetId")
     }
     
     private fun updateWidgetWithError(
@@ -285,12 +332,85 @@ class KakaoLinkWidgetProvider : AppWidgetProvider() {
         val appWidgetIds = appWidgetManager.getAppWidgetIds(
             android.content.ComponentName(context, KakaoLinkWidgetProvider::class.java)
         )
-        
         appWidgetIds.forEach { appWidgetId ->
-            // 먼저 로딩 상태로 표시
             showLoadingState(context, appWidgetManager, appWidgetId)
-            // 백그라운드에서 데이터 로드
-            loadWidgetData(context, appWidgetManager, appWidgetId)
+        }
+        if (appWidgetIds.isNotEmpty()) {
+            loadWidgetDataForAll(context, appWidgetManager, appWidgetIds)
+        }
+    }
+
+    private fun loadWidgetDataForAll(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetIds: IntArray
+    ) {
+        Log.d("Widget", "loadWidgetDataForAll 진입: appWidgetIds=${appWidgetIds.joinToString()}")
+        val prefs = context.getSharedPreferences("widget_prefs", Context.MODE_PRIVATE)
+        if (prefs.getBoolean("fetch_in_progress", false)) {
+            android.util.Log.d("Widget", "이미 fetch 중이므로 중복 요청 방지: appWidgetIds=${appWidgetIds.joinToString()}")
+            return
+        }
+        prefs.edit().putBoolean("fetch_in_progress", true).apply()
+        CoroutineScope(Dispatchers.IO).launch {
+            var emoticonsToUse: List<KakaoLink> = emptyList()
+            var linksToUse: List<KakaoLink> = emptyList()
+            var fetchSuccess = false
+            try {
+                val notificationHelper = NotificationHelper(context)
+                val gson = Gson()
+                var emoticonUpdated = false
+                var linkUpdated = false
+                // 1. kakaoLinks를 한 번만 fetch
+                var kakaoLinks: List<KakaoLink> = emptyList()
+                try {
+                    val parser = RssParser()
+                    kakaoLinks = parser.parseKakaoLinks()
+                    fetchSuccess = true
+                } catch (e: Exception) {
+                    Log.d("Widget", "kakaoLinks 파싱 오류: ${e.message}")
+                }
+                val emoticons = kakaoLinks.filter { it.description != "가을타타타" }
+                val links = kakaoLinks.filter { it.description == "가을타타타" }
+                // 2. 이모티콘 처리
+                val oldEmoticons = loadListFromPrefs(context, PREF_EMOTICONS)
+                emoticonsToUse = if (emoticons.isEmpty()) oldEmoticons else emoticons
+                if (emoticons.isNotEmpty()) {
+                    val newItems = emoticons.filter { new -> oldEmoticons.none { it.title == new.title } }
+                    Log.d("Widget", "새 이모티콘: ${newItems.size}개, ${newItems.map { it.title }}")
+                    if (newItems.isNotEmpty()) {
+                        notificationHelper.showNewEmoticonNotification(newItems)
+                    }
+                    saveListToPrefs(context, PREF_EMOTICONS, emoticons)
+                    prefs.edit().putLong("last_updated_emoticon", System.currentTimeMillis()).apply()
+                    emoticonUpdated = true
+                }
+                // 3. 링크 처리
+                val oldLinks = loadListFromPrefs(context, PREF_LINKS)
+                linksToUse = if (links.isEmpty()) oldLinks else links
+                if (links.isNotEmpty()) {
+                    val newItems = links.filter { new -> oldLinks.none { it.title == new.title } }
+                    Log.d("Widget", "새 링크: ${newItems.size}개, ${newItems.map { it.title }}")
+                    if (newItems.isNotEmpty()) {
+                        notificationHelper.showNewLinkNotification(newItems)
+                    }
+                    saveListToPrefs(context, PREF_LINKS, links)
+                    prefs.edit().putLong("last_updated_link", System.currentTimeMillis()).apply()
+                    linkUpdated = true
+                }
+                // 4. UI 스레드에서 모든 위젯에 대해 위젯 업데이트 (항상 이전 데이터라도 표시)
+                val allLinks = emoticonsToUse + linksToUse
+                CoroutineScope(Dispatchers.Main).launch {
+                    appWidgetIds.forEach { appWidgetId ->
+                        updateWidgetWithData(context, appWidgetManager, appWidgetId, allLinks)
+                    }
+                }
+            } finally {
+                android.util.Log.d("Widget", "finally: fetch_in_progress false로 해제: appWidgetIds=${appWidgetIds.joinToString()}")
+                prefs.edit().putBoolean("fetch_in_progress", false).apply()
+                android.util.Log.d("Widget", "emoticonsToUse.size=${emoticonsToUse.size}, linksToUse.size=${linksToUse.size}, appWidgetIds=${appWidgetIds.joinToString()}")
+                Log.d("Widget", "loadWidgetDataForAll 종료: appWidgetIds=${appWidgetIds.joinToString()}")
+            }
         }
     }
     
@@ -299,6 +419,7 @@ class KakaoLinkWidgetProvider : AppWidgetProvider() {
         appWidgetManager: AppWidgetManager,
         appWidgetId: Int
     ) {
+        Log.d("Widget", "showLoadingState: appWidgetId=$appWidgetId")
         val views = RemoteViews(context.packageName, R.layout.widget_layout)
         
         // 새로고침 버튼 설정
